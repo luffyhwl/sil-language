@@ -3,37 +3,32 @@
 ident : [a-zA-Z]([a-zA-Z0-9])*
 int : [0-9]+
 float : [0-9](\.[0-9]+)?(e-?[0-9]+)?
-string : "[^"]"		//另外对于字符串中有\"的情形，应当作为字符串的一部分
+string : "[^"]*"		//另外对于字符串中有\"的情形，应当作为字符串的一部分
 //对于操作符和关键字不详述
 
 //sil语言语法的BNF定义
-declarations :
-	declarations declaration
-	| declaration
 declaration :
-	var ident '=' const_int ';'
-	| var ident '=' const_float ';'
-	| var ident '=' const_str ';'
+	var ident '=' expression ';'
 	| var ident  ';'
-	| function 
+
 function :
 	'function' ident '(' params ')' body
+	'function' ident '('  ')' body
 params :
 	ident
 	| params ',' ident
-	|									
 
 body : 
 	'{' blocks '}'  
+	'{'  '}'  
 blocks :
 	blocks block
 	| block
 block : 
-	| declarations
+	| declaration
 	| function
 	| body
 	| statement
-	| 							
 
 statement :
 	expression 

@@ -55,108 +55,103 @@ bool sil_load_file(string file_path);
 ident : [a-zA-Z]([a-zA-Z0-9])*
 int : [0-9]+
 float : [0-9](\.[0-9]+)?(e-?[0-9]+)?
-string : "[^"]"		//另外对于字符串中有\"的情形，应当作为字符串的一部分
+string : "[^"]*"		//另外对于字符串中有\"的情形，应当作为字符串的一部分
 //对于操作符和关键字不详述
 
 //sil语言语法的BNF定义
-declarations :
-	declarations declaration
-	| declaration
 declaration :
-	var ident '=' const_int ';'
-	| var ident '=' const_float ';'
-	| var ident '=' const_str ';'
-	| var ident  ';'
-	| function 
+var ident '=' expression ';'
+| var ident  ';'
+
 function :
-	'function' ident '(' params ')' body
+'function' ident '(' params ')' body
+'function' ident '('  ')' body
 params :
-	ident
-	| params ',' ident
-	|									
+ident
+| params ',' ident
 
 body : 
-	'{' blocks '}'  
+'{' blocks '}'  
+'{'  '}'  
 blocks :
-	blocks block
-	| block
+blocks block
+| block
 block : 
-	| declarations
-	| function
-	| body
-	| statement
-	| 							
+| declaration
+| function
+| body
+| statement
 
 statement :
-	expression 
-	| if_statement
-	| while_statement
-	| for_statment
-	| 'return' ';'
-	| 'break' ';'
-	| 'continue' ';'
-	| ';'
+expression 
+| if_statement
+| while_statement
+| for_statment
+| 'return' ';'
+| 'break' ';'
+| 'continue' ';'
+| ';'
 
 if_statement :
-	if_part 
-	| if_part else_part
+if_part 
+| if_part else_part
 if_part :
-	'if' '(' expresion ')' body
-	| if' '(' expresion ')' statement
+'if' '(' expresion ')' body
+| if' '(' expresion ')' statement
 else_part :
-	'else'  '('  expresion ')' body
-	| 'else'  '('  expresion ')' statement
+'else'  '('  expresion ')' body
+| 'else'  '('  expresion ')' statement
 
 while_statement :
-	'while' '(' expression ')' body
-	| 'while' '(' expression ')' statement
+'while' '(' expression ')' body
+| 'while' '(' expression ')' statement
 
 for_statment :
-	'for' '(' for_part ';' for_part ';' for_part ')' body
-	| 'for' '(' for_part ';' for_part ';' for_part ')' statement
+'for' '(' for_part ';' for_part ';' for_part ')' body
+| 'for' '(' for_part ';' for_part ';' for_part ')' statement
 for_part :
-	expression
-	| 
+expression
+| 
 
 expression
-	assign_expression
-	| factor_logic
+assign_expression
+| factor_logic
 
 assign_expression
-	ident '=' expression
+ident '=' expression
 
 factor_logic :
-	factor_compare '&&' factor_compare
-	| factor_compare '||' factor_compare
+factor_compare '&&' factor_compare
+| factor_compare '||' factor_compare
 
 factor_compare : 
-	factor_plus_minus '==' factor_plus_minus
-	| factor_plus_minus '!=' factor_plus_minus
-	| factor_plus_minus '>' factor_plus_minus
-	| factor_plus_minus '<' factor_plus_minus
+factor_plus_minus '==' factor_plus_minus
+| factor_plus_minus '!=' factor_plus_minus
+| factor_plus_minus '>' factor_plus_minus
+| factor_plus_minus '<' factor_plus_minus
 
 factor_plus_minus
-	factor_mul_div '+' factor_mul_div
-	| factor_mul_div '-' factor_mul_div
+factor_mul_div '+' factor_mul_div
+| factor_mul_div '-' factor_mul_div
 
 factor_mul_div
-	fatcor_sigle '+' fatcor_sigle
-	| fatcor_sigle '-' fatcor_sigle
+fatcor_sigle '+' fatcor_sigle
+| fatcor_sigle '-' fatcor_sigle
 
 fatcor_sigle 
-	'!' term
-	| '-' term
+'!' term
+| '-' term
 
 term
-	int
-	| float
-	| string
-	| ident
-	| '(' factor_logic ')'
-	| ident '(' real_params ')'
+int
+| float
+| string
+| ident
+| '(' factor_logic ')'
+| ident '(' real_params ')'
 
 real_params
-	| factor_logic
-	| real_params ',' factor_logic
+| factor_logic
+| real_params ',' factor_logic
 
 */
