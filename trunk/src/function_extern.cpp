@@ -150,7 +150,7 @@ int sil_help()
 		" to_string 将一个值转换为string类型，例如：to_string(254);\n"
 		" strlen 求字符串的长度，例如：strlen(\"hello\");\n"
 		" substr 截取字符串的的一部分，例如：substr(\"hello\",1,3);\n"
-		" eval 可以求值一个字符串形式的表达式，例如:  var code=\"1+2*3\";eval(code);\n"
+		" eval 可以求值一个字符串形式的表达式，例如:  var code=\"1+2*3;\";eval(code);\n"
 		" load 可以加载并执行一个sil代码的文件，例如： load(\"../lib/math_test.sil\");\n"
 		" exit 终止脚本的执行，例如：print(\"hello\");exit();print(\"world\");\n"
 		" print 打印一个值，例如：print(\"hello world\"+3);\n"
