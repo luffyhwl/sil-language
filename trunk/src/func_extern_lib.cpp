@@ -11,7 +11,7 @@ bool default_param_invert_rule(int param_count,vector<inst_value>& stk,int first
 {
 	for(int count_i=0;count_i<param_count;count_i++)
 	{
-		if(!stk[first_param+count_i].can_invert_to(pfe->m_params_t[count_i])) break;
+		if(!stk[first_param+count_i].can_invert_to(pfe->m_params_t[count_i])) return false;
 	}
 	return true;
 }
