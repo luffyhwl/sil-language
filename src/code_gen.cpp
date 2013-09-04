@@ -11,27 +11,17 @@
 
 bool inst_value::can_invert_to(e_inst_value_t to_type)
 {
-	char buf[32];
-	memset(buf,0,sizeof(buf));
 	if(to_type==eiv_string) return true;
-	else if(to_type==eiv_float)
+	else if((to_type==eiv_float) || (to_type==eiv_int) )
 	{
 		if(m_type!=eiv_string) return true;
-		else 
-		{
-			sscanf_s(buf,"%f",m_string_value.c_str());
-		}
+		word_parser parser(m_string_value);
+		word tmp=parser.get();
+		if(!parser.check(ewt_end_file)) return false;
+		else if(tmp.m_type==ewt_int) return true;
+		else if(tmp.m_type==ewt_float) return true;
 	}
-	else if(to_type==eiv_int)
-	{
-		if(m_type!=eiv_string) return true;
-		else 
-		{
-			sscanf_s(buf,"%d",m_string_value.c_str());
-		}
-	}
-	if(strlen(buf)==0) return false;
-	else return true;
+	return false;
 }
 
 int inst_value::to_int()
