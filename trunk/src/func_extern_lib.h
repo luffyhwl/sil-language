@@ -13,12 +13,35 @@ bool find_internal_function(const string& fun_name);
 bool internel_fun_call(const string&fun_name,int param_count,vector<inst_value>& stk,int first_param);
 
 class func_extern;
-//类型转换规则是可以自定义的，一下是内置的几条规则
+//类型转换规则检查传入的实参是否能够被函数所接收
 typedef bool (*param_invert_rule_t)(int,vector<inst_value>&,int,func_extern*);
+//一下是内置的几条规则
 //参数的类型转换规则，默认规则如下
 bool default_param_invert_rule(int param_count,vector<inst_value>& stk,int first_param,func_extern* pfe);
 //对于加减乘除等内置操作，应当进行类型提升 ，int可以提升为float，float可以提升到string
 bool internal_param_invert_rule(int param_count,vector<inst_value>& stk,int first_param,func_extern* pfe);
+
+template<typename T> T invert_param_to(vector<inst_value>& stk,int index=0);
+
+//类型到整数索引的转换
+template<typename T>
+struct type_to_eiv
+{
+	static e_inst_value_t eiv;
+};
+template <typename T> e_inst_value_t type_to_eiv<T>::eiv=eiv_invalid;
+template<> struct type_to_eiv<int>
+{
+	static e_inst_value_t eiv;
+};
+template<> struct type_to_eiv<double>
+{
+	static e_inst_value_t eiv;
+};
+template<> struct type_to_eiv<string>
+{
+	static e_inst_value_t eiv;
+};
 
 class func_extern
 {
@@ -37,26 +60,6 @@ public:
 };
 
 class weak_param{};
-template<typename T> T invert_param_to(vector<inst_value>& stk,int index=0);
-
-template<typename T>
-struct type_to_eiv
-{
-	static const e_inst_value_t eiv=eiv_invalid;
-};
-template<> struct type_to_eiv<int>
-{
-	static const e_inst_value_t eiv=eiv_int;
-};
-template<> struct type_to_eiv<double>
-{
-	static const e_inst_value_t eiv=eiv_float;
-};
-template<> struct type_to_eiv<string>
-{
-	static const e_inst_value_t eiv=eiv_string;
-};
-
 //扩展函数的表示
 template<typename ResultT,
 	typename P1=weak_param,typename P2=weak_param,
@@ -72,34 +75,13 @@ public:
 	typedef ResultT (*fun4_t)(P1,P2,P3,P4) ;
 	typedef ResultT (*fun5_t)(P1,P2,P3,P4,P5) ;
 	typedef ResultT (*fun6_t)(P1,P2,P3,P4,P5,P6) ;
-private:
-	int m_fun_index;
-	union{
-		fun0_t _0;
-		fun1_t _1;
-		fun2_t _2;
-		fun3_t _3;
-		fun4_t _4;
-		fun5_t _5;
-		fun6_t _6;
-	}m_fun;
 public:
-	void init_params()
-	{
-		m_return_t=type_to_eiv<ResultT>::eiv;
-		if(type_to_eiv<P1>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P1>::eiv);
-		if(type_to_eiv<P2>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P2>::eiv);
-		if(type_to_eiv<P3>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P3>::eiv);
-		if(type_to_eiv<P4>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P4>::eiv);
-		if(type_to_eiv<P5>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P5>::eiv);
-		if(type_to_eiv<P6>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P6>::eiv);
-	}
 #define FUNC_EXTERN_IMPL_CONSTRUCTOR(num) \
 	func_extern_impl(const string& fun_name,fun##num##_t pf,param_invert_rule_t invert_f)\
 	:func_extern(fun_name,invert_f)\
 	{\
-		m_fun._##num=pf;\
-		m_fun_index=##num;\
+		m_fun = (void*)pf;\
+		m_fun_index = num;\
 		init_params();\
 	}
 	FUNC_EXTERN_IMPL_CONSTRUCTOR(0);
@@ -110,17 +92,15 @@ public:
 	FUNC_EXTERN_IMPL_CONSTRUCTOR(5);
 	FUNC_EXTERN_IMPL_CONSTRUCTOR(6);
 
-	template<typename ResultT,typename P1,typename P2,typename P3,typename P4,typename P5,typename P6>
-	ResultT call_wrap(P1 p1,P2 p2,P3 p3,P4 p4,P5 p5,P6 p6)
+	void init_params()
 	{
-		if(m_fun_index==0) return m_fun._0();
-		if(m_fun_index==1) return m_fun._1(p1);
-		if(m_fun_index==2) return m_fun._2(p1,p2);
-		if(m_fun_index==3) return m_fun._3(p1,p2,p3);
-		if(m_fun_index==4) return m_fun._4(p1,p2,p3,p4);
-		if(m_fun_index==5) return m_fun._5(p1,p2,p3,p4,p5);
-		if(m_fun_index==6) return m_fun._6(p1,p2,p3,p4,p5,p6);
-		return ResultT();
+		m_return_t=type_to_eiv<ResultT>().eiv;
+		if(type_to_eiv<P1>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P1>().eiv);
+		if(type_to_eiv<P2>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P2>().eiv);
+		if(type_to_eiv<P3>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P3>().eiv);
+		if(type_to_eiv<P4>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P4>().eiv);
+		if(type_to_eiv<P5>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P5>().eiv);
+		if(type_to_eiv<P6>::eiv!=eiv_invalid) m_params_t.push_back(type_to_eiv<P6>().eiv);
 	}
 
 	virtual void operator()(int param_count,vector<inst_value>& stk,int first_param)
@@ -134,6 +114,22 @@ public:
 			invert_param_to<P6>(stk,first_param+5)
 			);
 	}
+
+	template<typename XResultT,typename XP1,typename XP2,typename XP3,typename XP4,typename XP5,typename XP6>
+	XResultT call_wrap(XP1 p1,XP2 p2,XP3 p3,XP4 p4,XP5 p5,XP6 p6)
+	{
+		if(m_fun_index==0) return ((fun0_t)m_fun)();
+		if(m_fun_index==1) return ((fun1_t)m_fun)(p1);
+		if(m_fun_index==2) return ((fun2_t)m_fun)(p1,p2);
+		if(m_fun_index==3) return ((fun3_t)m_fun)(p1,p2,p3);
+		if(m_fun_index==4) return ((fun4_t)m_fun)(p1,p2,p3,p4);
+		if(m_fun_index==5) return ((fun5_t)m_fun)(p1,p2,p3,p4,p5);
+		if(m_fun_index==6) return ((fun6_t)m_fun)(p1,p2,p3,p4,p5,p6);
+		return XResultT();
+	}
+private:
+	int m_fun_index;
+	void* m_fun;
 };
 
 //扩展函数集合管理，和调用封装

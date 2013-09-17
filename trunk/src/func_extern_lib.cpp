@@ -5,6 +5,9 @@
 联系地址:	qq:308821698 （http://t.qq.com/flysnowxg/）
 *********************************************************************/
 #include "func_extern_lib.h"
+e_inst_value_t type_to_eiv<int>::eiv=eiv_int;
+e_inst_value_t type_to_eiv<double>::eiv=eiv_float;
+e_inst_value_t type_to_eiv<string>::eiv=eiv_string;
 
 //参数的类型转换规则，默认规则如下
 bool default_param_invert_rule(int param_count,vector<inst_value>& stk,int first_param,func_extern* pfe)

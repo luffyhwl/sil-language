@@ -42,7 +42,7 @@ public:
 		}
 		return NULL;
 	}
-	_symbol* push_symbol(_symbol& sym)
+	_symbol* push_symbol(const _symbol& sym)
 	{
 		if(m_symbols.size()>=10240)
 		{
@@ -64,5 +64,5 @@ symbol_table* get_top_table();
 symbol_table* create_table();
 void pop_table();
 _symbol* find_symbol(const string& name,e_symbol sym_type=es_value);
-_symbol* push_symbol(_symbol& sym,bool b_replace=false);
+_symbol* push_symbol(const _symbol& sym,bool b_replace=false);
 
