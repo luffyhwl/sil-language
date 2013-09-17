@@ -24,30 +24,6 @@ ResultT base_op_ort_rtt(T first,T second)
 	return  Op<T>()(first,second);
 }
 
-template<template <typename ResultT,typename P1,typename P2> class Op,
-typename ResultT,typename T1,typename T2>
-ResultT base_op_ort_rtt(T1 first,T2 second)
-{
-	return  Op<ResultT,T1,T2>()(first,second);
-}
-
-#define SIL_OPERATOR_T(fun_name,op) \
-	template<typename ResultT,typename P1,typename P2>\
-struct sil_##fun_name\
-{	\
-	ResultT operator()(P1 first,P2 second){return first ##op second;}\
-};
-
-SIL_OPERATOR_T(plus,+)
-SIL_OPERATOR_T(minus,-)
-SIL_OPERATOR_T(multiplies,*)
-SIL_OPERATOR_T(divides,/)
-SIL_OPERATOR_T(modulus,%)
-SIL_OPERATOR_T(less,<)
-SIL_OPERATOR_T(greater,>)
-SIL_OPERATOR_T(equal_to,==)
-SIL_OPERATOR_T(not_equal_to,!=)
-
 template<typename T>
 int sil_to_int(T value)
 {
@@ -91,7 +67,7 @@ string sil_read()
 int sil_bat(string win_script)
 {
 	char bat_file_name[64];
-	sprintf_s(bat_file_name,"temp%d%d.bat",rand(),rand());
+	sprintf(bat_file_name,"temp%d%d.bat",rand(),rand());
 
 	ofstream o_file(bat_file_name);
 	o_file<<"echo off\r\n";
@@ -99,7 +75,7 @@ int sil_bat(string win_script)
 	o_file.close();
 
 	char cmd_line[4096];
-	sprintf_s(cmd_line,"cmd /q /c \"call %s\"",bat_file_name);
+	sprintf(cmd_line,"cmd /q /c \"call %s\"",bat_file_name);
 	STARTUPINFOA si = { sizeof(si) }; 
 	PROCESS_INFORMATION pi; 
 	si.dwFlags = STARTF_USESHOWWINDOW; 

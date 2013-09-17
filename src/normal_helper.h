@@ -16,7 +16,7 @@ public:
 	print_hepler(const char* fun_name,int line,bool b_out_fl,bool b_print=true)
 		:m_line(line),m_b_out_fl(b_out_fl),m_b_print(b_print)
 	{
-		strcpy_s(m_fun_name,fun_name);
+		strcpy(m_fun_name,fun_name);
 	}
 	~print_hepler(){}
 	void operator()(const char* format,...);

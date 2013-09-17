@@ -6,7 +6,6 @@
 *********************************************************************/
 #include <windows.h>
 #include <stdio.h>
-#include <tchar.h>
 
 #include <vector>
 #include <map>
@@ -17,12 +16,11 @@
 #include <iostream>
 #include <fstream>
 #include <istream>
-#include <strstream>
 #include <memory>
 #include <memory>
 #include <functional>
 using namespace std;
-#define STD_TR1 
+//#define STD_TR1 
 #ifdef STD_TR1
 using namespace std::tr1;
 #else

@@ -13,10 +13,10 @@ bool g_display_debug_info=false;
 void print_hepler::operator()(const char* format,...)
 {
 	if(!m_b_print) return;
-	if(m_b_out_fl) printf_s("%s:%d ",m_fun_name,m_line);
+	if(m_b_out_fl) printf("%s:%d ",m_fun_name,m_line);
 	va_list arg_list;
 	va_start(arg_list,format);
-	vprintf_s(format,arg_list);
+	vprintf(format,arg_list);
 	va_end(arg_list);
 }
 
@@ -26,10 +26,10 @@ void error_printer::operator()(const char* format,...)
 {
 	sm_error_count++;
 	if(!m_b_print) return;
-	if(m_b_out_fl) printf_s("%s:%d ",m_fun_name,m_line);
+	if(m_b_out_fl) printf("%s:%d ",m_fun_name,m_line);
 	va_list arg_list;
 	va_start(arg_list,format);
-	vprintf_s(format,arg_list);
+	vprintf(format,arg_list);
 	va_end(arg_list);
 }
 
@@ -41,8 +41,8 @@ int error_printer::get_error_count()
 void grammar_printer::operator()(word& item)
 {
 	if(!m_b_print) return;
-	if(m_b_out_fl) printf_s("%s:%d ==>   ",m_fun_name,m_line);
-	printf_s("%s\n",item.m_str_value.c_str());
+	if(m_b_out_fl) printf("%s:%d ==>   ",m_fun_name,m_line);
+	printf("%s\n",item.m_str_value.c_str());
 }
 
 bool sil_set_sil(string key,int value)

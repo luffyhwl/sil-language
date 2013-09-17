@@ -85,7 +85,7 @@ _symbol* find_symbol(const string& name,e_symbol sym_type)
 	return NULL;
 }
 
-_symbol* push_symbol(_symbol& sym,bool b_replace)
+_symbol* push_symbol(const _symbol& sym,bool b_replace)
 {
 	symbol_table* p_tabel=get_top_table();
 	_symbol* p_sym=p_tabel->find_symbol(sym.m_name);

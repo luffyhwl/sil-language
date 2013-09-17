@@ -27,7 +27,7 @@ set<e_word_t> _create_syms(
 	return result;
 }
 
-set<e_word_t> _create_syms(set<e_word_t>& set1,e_word_t symol1=ewt_invalid,e_word_t symol5=ewt_invalid,
+set<e_word_t> _create_syms(const set<e_word_t>& set1,e_word_t symol1=ewt_invalid,e_word_t symol5=ewt_invalid,
 	e_word_t symol2=ewt_invalid,e_word_t symol3=ewt_invalid,e_word_t symol4=ewt_invalid,e_word_t symol6=ewt_invalid,
 	e_word_t symol7=ewt_invalid,e_word_t symol8=ewt_invalid)
 {
@@ -43,7 +43,7 @@ set<e_word_t> _create_syms(set<e_word_t>& set1,e_word_t symol1=ewt_invalid,e_wor
 	return result;
 }
 
-set<e_word_t> _create_syms(set<e_word_t>& set1,set<e_word_t>& set2,
+set<e_word_t> _create_syms(const set<e_word_t>& set1,const set<e_word_t>& set2,
 	e_word_t symol1=ewt_invalid,e_word_t symol2=ewt_invalid,e_word_t symol3=ewt_invalid,e_word_t symol4=ewt_invalid,
 	e_word_t symol5=ewt_invalid,e_word_t symol6=ewt_invalid,e_word_t symol7=ewt_invalid,e_word_t symol8=ewt_invalid)
 {
@@ -91,7 +91,7 @@ void grammar_parser::load_string(const string& str)
 	m_words=word_parser(str);
 }
 
-void grammar_parser::test_and_skip(set<e_word_t> begin,set<e_word_t>& follow)
+void grammar_parser::test_and_skip(set<e_word_t> begin,const set<e_word_t>& follow)
 {
 	word tmp=m_words.get();
 	m_words.push(tmp);

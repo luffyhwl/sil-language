@@ -25,7 +25,7 @@ blocks :
 	blocks block
 	| block
 block : 
-	| declaration
+	declaration
 	| function
 	| body
 	| statement
@@ -69,28 +69,28 @@ assign_expression
 	ident '=' expression
 
 factor_logic :
-	factor_compare '&&' factor_compare
-	| factor_compare '||' factor_compare
+	factor_logic '&&' factor_compare
+	| factor_logic '||' factor_compare
 
 factor_compare : 
-	factor_plus_minus '==' factor_plus_minus
-	| factor_plus_minus '!=' factor_plus_minus
-	| factor_plus_minus '>' factor_plus_minus
-	| factor_plus_minus '<' factor_plus_minus
+	factor_compare '==' factor_plus_minus
+	| factor_compare '!=' factor_plus_minus
+	| factor_compare '>' factor_plus_minus
+	| factor_compare '<' factor_plus_minus
 
-factor_plus_minus
-	factor_mul_div '+' factor_mul_div
-	| factor_mul_div '-' factor_mul_div
+factor_plus_minus :
+	factor_plus_minus '+' factor_mul_div
+	| factor_plus_minus '-' factor_mul_div
 
-factor_mul_div
-	fatcor_sigle '+' fatcor_sigle
-	| fatcor_sigle '-' fatcor_sigle
+factor_mul_div :
+	factor_mul_div '+' fatcor_sigle
+	| factor_mul_div '-' fatcor_sigle
 
-fatcor_sigle 
+fatcor_sigle  :
 	'!' term
 	| '-' term
 
-term
+term:
 	int
 	| float
 	| string
@@ -98,6 +98,6 @@ term
 	| '(' factor_logic ')'
 	| ident '(' real_params ')'
 
-real_params
+real_params :
 	| factor_logic
 	| real_params ',' factor_logic

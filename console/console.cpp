@@ -4,9 +4,9 @@
 作者:			薛钢 
 联系地址:	qq:308821698 （http://t.qq.com/flysnowxg/）
 *********************************************************************/
-#include "sil.h"
-
-int _tmain(int argc, _TCHAR* argv[])
+#include "../src/sil.h"
+#include <locale.h>
+int main(int argc, char* argv[])
 {
 	init_sil();
 	//如果传入一个要解释的文件，解释执行文件即可，否则启动命令行解释器

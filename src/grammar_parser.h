@@ -17,7 +17,7 @@ public:
 	bool load_file(const string& file_path);
 	void load_string(const string& str);
 
-	void test_and_skip(set<e_word_t> begin,set<e_word_t>& follow);
+	void test_and_skip(set<e_word_t> begin,const set<e_word_t>& follow);
 	bool complie();
 	void block(set<e_word_t> follows,int& stk_index,while_context* p_while_conext);//stk_index指向栈顶上面第一个未用的位置
 	void body(set<e_word_t> follows,int& stk_index,while_context* p_while_conext);//略过第一个符号 '{'
@@ -60,98 +60,98 @@ string : "[^"]*"		//另外对于字符串中有\"的情形，应当作为字符串的一部分
 
 //sil语言语法的BNF定义
 declaration :
-var ident '=' expression ';'
-| var ident  ';'
+	var ident '=' expression ';'
+	| var ident  ';'
 
 function :
-'function' ident '(' params ')' body
-'function' ident '('  ')' body
+	'function' ident '(' params ')' body
+	'function' ident '('  ')' body
 params :
-ident
-| params ',' ident
+	ident
+	| params ',' ident
 
 body : 
-'{' blocks '}'  
-'{'  '}'  
+	'{' blocks '}'  
+	'{'  '}'  
 blocks :
-blocks block
-| block
+	blocks block
+	| block
 block : 
-| declaration
-| function
-| body
-| statement
+	declaration
+	| function
+	| body
+	| statement
 
 statement :
-expression 
-| if_statement
-| while_statement
-| for_statment
-| 'return' ';'
-| 'break' ';'
-| 'continue' ';'
-| ';'
+	expression 
+	| if_statement
+	| while_statement
+	| for_statment
+	| 'return' ';'
+	| 'break' ';'
+	| 'continue' ';'
+	| ';'
 
 if_statement :
-if_part 
-| if_part else_part
+	if_part 
+	| if_part else_part
 if_part :
-'if' '(' expresion ')' body
-| if' '(' expresion ')' statement
+	'if' '(' expresion ')' body
+	| if' '(' expresion ')' statement
 else_part :
-'else'  '('  expresion ')' body
-| 'else'  '('  expresion ')' statement
+	'else'  '('  expresion ')' body
+	| 'else'  '('  expresion ')' statement
 
 while_statement :
-'while' '(' expression ')' body
-| 'while' '(' expression ')' statement
+	'while' '(' expression ')' body
+	| 'while' '(' expression ')' statement
 
 for_statment :
-'for' '(' for_part ';' for_part ';' for_part ')' body
-| 'for' '(' for_part ';' for_part ';' for_part ')' statement
+	'for' '(' for_part ';' for_part ';' for_part ')' body
+	| 'for' '(' for_part ';' for_part ';' for_part ')' statement
 for_part :
-expression
-| 
+	expression
+	| 
 
 expression
-assign_expression
-| factor_logic
+	assign_expression
+	| factor_logic
 
 assign_expression
-ident '=' expression
+	ident '=' expression
 
 factor_logic :
-factor_compare '&&' factor_compare
-| factor_compare '||' factor_compare
+	factor_logic '&&' factor_compare
+	| factor_logic '||' factor_compare
 
 factor_compare : 
-factor_plus_minus '==' factor_plus_minus
-| factor_plus_minus '!=' factor_plus_minus
-| factor_plus_minus '>' factor_plus_minus
-| factor_plus_minus '<' factor_plus_minus
+	factor_compare '==' factor_plus_minus
+	| factor_compare '!=' factor_plus_minus
+	| factor_compare '>' factor_plus_minus
+	| factor_compare '<' factor_plus_minus
 
-factor_plus_minus
-factor_mul_div '+' factor_mul_div
-| factor_mul_div '-' factor_mul_div
+factor_plus_minus :
+	factor_plus_minus '+' factor_mul_div
+	| factor_plus_minus '-' factor_mul_div
 
-factor_mul_div
-fatcor_sigle '+' fatcor_sigle
-| fatcor_sigle '-' fatcor_sigle
+factor_mul_div :
+	factor_mul_div '+' fatcor_sigle
+	| factor_mul_div '-' fatcor_sigle
 
-fatcor_sigle 
-'!' term
-| '-' term
+fatcor_sigle  :
+	'!' term
+	| '-' term
 
-term
-int
-| float
-| string
-| ident
-| '(' factor_logic ')'
-| ident '(' real_params ')'
+term:
+	int
+	| float
+	| string
+	| ident
+	| '(' factor_logic ')'
+	| ident '(' real_params ')'
 
-real_params
-| factor_logic
-| real_params ',' factor_logic
+real_params :
+	| factor_logic
+	| real_params ',' factor_logic
 
 */

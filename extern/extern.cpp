@@ -8,7 +8,7 @@
 //首先会定义一些符合sil接口规范的函数（由于sil的局限，sil只支持参数是int float string 这三种类型的函数）
 //然后调用register_function();注册函数
 //最后调用file_rw.sil脚本来操作文件
-#include "sil.h"
+#include "../src/sil.h"
 #pragma warning(disable:4311)
 #pragma warning(disable:4312)
 typedef int file_handle;
@@ -40,7 +40,7 @@ int sil_ftell(file_handle file)
 {
 	return ftell((FILE*)file);
 }
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
 	printf("sil v0.1(创建时间:%s)author:xuegang[qq:308821698]\n",__TIMESTAMP__ );
 	printf("这只是个例子用于展示如何去用c++扩展sil的函数调用\n");
