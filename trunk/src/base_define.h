@@ -4,8 +4,10 @@
 作者:			薛钢 
 联系地址:	qq:308821698 （http://t.qq.com/flysnowxg/）
 *********************************************************************/
-#include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
 
 #include <vector>
 #include <map>

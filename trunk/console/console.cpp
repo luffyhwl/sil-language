@@ -5,7 +5,7 @@
 ÁªÏµµØÖ·:	qq:308821698 £¨http://t.qq.com/flysnowxg/£©
 *********************************************************************/
 #include "../src/sil.h"
-#include <locale.h>
+
 int main(int argc, char* argv[])
 {
 	init_sil();

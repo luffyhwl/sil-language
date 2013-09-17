@@ -5,9 +5,11 @@
 ÁªÏµµØÖ·:	qq:308821698 £¨http://t.qq.com/flysnowxg/£©
 *********************************************************************/
 #include "normal_helper.h"
-#include "shlwapi.h"
-#pragma comment(lib,"shlwapi.lib")
-
+#ifdef GCC
+#include <unistd.h>
+#else
+#include <direct.h>
+#endif
 bool g_display_grammar=false;
 bool g_display_debug_info=false;
 void print_hepler::operator()(const char* format,...)
@@ -90,7 +92,7 @@ string get_current_dir()
 	if(g_current_dir=="")
 	{
 		char dir[256];
-		GetCurrentDirectoryA(256,dir);
+		getcwd(dir,256);
 		g_current_dir=dir;
 	}
 	if(g_current_dir.size()==0) return "";
@@ -137,7 +139,7 @@ string get_file_full_path(string file_path,string cur_dir)
 	}
 	else// dir/file
 	{
-		return cur_dir+"\\"+file_path;
+		return cur_dir+"/"+file_path;
 	}
 }
 
