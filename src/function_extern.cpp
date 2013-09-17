@@ -7,6 +7,9 @@
 #include "function_extern.h"
 #include "func_extern_lib.h"
 #include "symbol_manager.h"
+#ifndef GCC
+#include <windows.h>
+#endif
 
 template<template <typename T> class Op ,typename T>
 T base_op_ot_tt(T first)
@@ -66,6 +69,7 @@ string sil_read()
 
 int sil_bat(string win_script)
 {
+#ifndef GCC
 	char bat_file_name[64];
 	sprintf(bat_file_name,"temp%d%d.bat",rand(),rand());
 
@@ -88,6 +92,7 @@ int sil_bat(string win_script)
 		::CloseHandle (pi.hProcess); 
 	} 
 	remove(bat_file_name);
+#endif
 	return 0;
 }
 
